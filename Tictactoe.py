@@ -1,33 +1,29 @@
 
+# check if the game is running
 is_playing = True
+
+# make game field
 board = [[" " for x in range(3)] for y in range(3)]
-print(board)
 
-for r in range(3):
-    print(" ", board[r][0], "|", board[r][1], "|", board[r][2])
-    if r!=2:
-        print("----|---|----")
-
-# Player
-#board[0][0] = "O"
 
 # Player turn
 def move_player(x, y):
-    str = "O"
+    sign = "O"
     is_player_turn = True
     global is_playing
 
     while is_player_turn:
-        if not is_game_over(str):
+        if not is_game_over(sign):
             if board[x][y] == " ":
-                board[x][y] = str
+                board[x][y] = sign
                 print_playground()
                 is_player_turn = False
             else:
                 print("Input position is already taken. Try again.")
-                break
+                put_coordinates()
+
     # to check if game over is.
-    if is_game_over(str):
+    if is_game_over(sign):
         is_playing = False
         print("Game Over.")
     else:
@@ -41,11 +37,11 @@ def print_playground():
 
 # Computer turn (in a simple way)
 def move_com():
-    str = "X"
+    sign = "X"
     done = False
     global is_playing
 
-    if not is_game_over(str):
+    if not is_game_over(sign):
         for x in range(3):
             for y in range(3):
                 if board[x][y] == " " and not done:
@@ -53,33 +49,43 @@ def move_com():
                     done = True
                     print_playground()
 
-    if is_game_over(str):
+    if is_game_over(sign):
        is_playing = False
        print("Game Over.")
 
 
-def is_game_over(str):
+def is_game_over(sign):
 
     for i in range(3):
-        if board[i][0] == str and board[i][1] == str and board[i][2] == str:   # -
+        if board[i][0] == sign and board[i][1] == sign and board[i][2] == sign:   # -
             return True
-        elif board[0][i] == str and board[1][i] == str and board[2][i] == str:  # |
+        elif board[0][i] == sign and board[1][i] == sign and board[2][i] == sign:  # |
             return True
-        elif board[0][0] == str and board[1][1] == str and board[2][2] == str: # \
+        elif board[0][0] == sign and board[1][1] == sign and board[2][2] == sign: # \
             return True
-        elif board[0][2] == str and board[1][1] == str and board[2][0] == str: # /
+        elif board[0][2] == sign and board[1][1] == sign and board[2][0] == sign: # /
             return True
         else:
             return False
 
 
-while is_playing:
+def put_coordinates():
     x = int(input("Please give an x value: "))
     y = int(input("Please give an y value: "))
 
-    if x < 0 or y < 0 or x >= 3 or y >= 3:
-        print("x and y have to be in range between 0 and 2.")
-    move_player(x, y)
+    try:
+        if x < 0 or y < 0 or x >= 3 or y >= 3:
+            raise Exception("x and y have to be in range between 0 and 2.")
+        else:
+            move_player(x, y)
+
+    except Exception as e:
+        print("Error: ", e)
+
+
+while is_playing:
+    put_coordinates()
+
 
 
 
