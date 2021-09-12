@@ -99,7 +99,6 @@ def move_com_with_rnd_smartly():
 
     # Avoid having O in a row (put X when finding 2 X in a row)
     else:
-
         if not done:
 
             for i in range(3):
@@ -135,8 +134,8 @@ def move_com_with_rnd_smartly():
                     break
                 else:
                     continue
-                    # nobody wins til the field is full
 
+            # nobody wins til the field is full
             if is_game_field_full():
                 is_playing = False
                 print("---------------DRAW-------------")
@@ -202,12 +201,12 @@ def is_game_field_full():
                 cnt+=1
                 continue
 
-    if cnt == 0 or cnt == 1:
+    if cnt == 0 or cnt == 1:  # one field is left without any win or zero field is left.
         return True
     return False
 
 
-print("------Welcome to TICTACTOE------")
+print("------Welcome to TicTacToe------")
 while is_playing:
     put_coordinates()
 
