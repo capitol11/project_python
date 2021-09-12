@@ -1,4 +1,3 @@
-
 # check if the game is running
 is_playing = True
 
@@ -22,7 +21,7 @@ def move_player(x, y):
                 # to check if game over is.
                 if is_game_over(sign):
                     is_playing = False
-                    print("Game Over.")
+                    print("------------GAME  OVER-----------")
 
                 else:
                     move_com()
@@ -38,6 +37,7 @@ def print_playground():
         print(" ", board[r][0], "|", board[r][1], "|", board[r][2])
         if r != 2:
             print("----|---|----")
+    print("")
 
 
 # Computer turn (in a simple way)
@@ -56,20 +56,19 @@ def move_com():
 
     if is_game_over(sign):
         is_playing = False
-        print("Game Over.")
+        print("------------GAME  OVER-----------")
 
 
 # check game over
 def is_game_over(sign):
-
     for i in range(3):
-        if board[i][0] == sign and board[i][1] == sign and board[i][2] == sign:   # -
+        if board[i][0] == sign and board[i][1] == sign and board[i][2] == sign:  # -
             return True
         elif board[0][i] == sign and board[1][i] == sign and board[2][i] == sign:  # |
             return True
-        elif board[0][0] == sign and board[1][1] == sign and board[2][2] == sign: # \
+        elif board[0][0] == sign and board[1][1] == sign and board[2][2] == sign:  # \
             return True
-        elif board[0][2] == sign and board[1][1] == sign and board[2][0] == sign: # /
+        elif board[0][2] == sign and board[1][1] == sign and board[2][0] == sign:  # /
             return True
         else:
             continue
@@ -78,8 +77,6 @@ def is_game_over(sign):
 
 # get coordinates from console
 def put_coordinates():
-
-
     try:
 
         x = int(input("Please give an x value: "))
@@ -95,13 +92,6 @@ def put_coordinates():
         print("Error: ", e)
 
 
+print("------Welcome to TICTACTOE------")
 while is_playing:
     put_coordinates()
-
-
-
-
-
-
-
-
