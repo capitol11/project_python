@@ -100,50 +100,54 @@ def move_com_with_rnd_smartly():
     # Avoid having O in a row (put X when finding 2 X in a row)
     else:
 
-        for i in range(3):
+        if not done:
 
-            if board[i][0]=="O" and board[i][2]=="O" and board[i][1] == " ":
-                board[i][1] = sign
-                done = True
-                print_playground()
-                break
-            elif board[0][i]=="O" and board[2][i]=="O" and board[1][i] == " ":
-                board[1][i] = sign
-                done = True
-                print_playground()
-                break
-            elif board[i][0]=="O" and board[i][1]=="O" and board[i][2] == " ":
-                board[i][2] = sign
-                done = True
-                print_playground()
-                break
-            elif board[i][1]=="O" and board[i][2]=="O" and board[i][0] == " ":
-                board[i][0] = sign
-                done = True
-                print_playground()
-                break
-            elif board[0][i]=="O" and board[1][i]=="O" and board[2][i] == " ":
-                board[2][i] = sign
-                done = True
-                print_playground()
-                break
-            elif board[1][i]=="O" and board[2][i]=="O" and board[0][i] == " ":
-                board[0][i] = sign
-                done = True
-                print_playground()
-                break
-            else:
-                # nobody wins til the field is full
-                if is_game_field_full():
-                    is_playing = False
-                    print("---------------DRAW-------------")
+            for i in range(3):
+                if board[i][0]=="O" and board[i][2]=="O" and board[i][1] == " ":
+                    board[i][1] = sign
+                    done = True
+                    print_playground()
                     break
+                elif board[0][i]=="O" and board[2][i]=="O" and board[1][i] == " ":
+                    board[1][i] = sign
+                    done = True
+                    print_playground()
+                    break
+                elif board[i][0]=="O" and board[i][1]=="O" and board[i][2] == " ":
+                    board[i][2] = sign
+                    done = True
+                    print_playground()
+                    break
+                elif board[i][1]=="O" and board[i][2]=="O" and board[i][0] == " ":
+                    board[i][0] = sign
+                    done = True
+                    print_playground()
+                    break
+                elif board[0][i]=="O" and board[1][i]=="O" and board[2][i] == " ":
+                    board[2][i] = sign
+                    done = True
+                    print_playground()
+                    break
+                elif board[1][i]=="O" and board[2][i]=="O" and board[0][i] == " ":
+                    board[0][i] = sign
+                    done = True
+                    print_playground()
+                    break
+                else:
+                    continue
+                    # nobody wins til the field is full
+
+            if is_game_field_full():
+                is_playing = False
+                print("---------------DRAW-------------")
+
+            if not done:
                 while True:
                     x = random.randrange(0, 3)
                     y = random.randrange(0, 3)
 
                     if not is_game_over(sign):
-                        if board[x][y] == " " and not done:
+                        if board[x][y] == " ":
                             board[x][y] = "X"
                             done = True
                             print_playground()
