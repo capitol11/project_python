@@ -6,7 +6,7 @@ is_playing = True
 board = [[" " for x in range(3)] for y in range(3)]
 
 
-# Player turn
+# player turn
 def move_player(x, y):
     sign = "O"
     is_player_turn = True
@@ -18,22 +18,27 @@ def move_player(x, y):
                 board[x][y] = sign
                 print_playground()
                 is_player_turn = False
+
+                # to check if game over is.
+                if is_game_over(sign):
+                    is_playing = False
+                    print("Game Over.")
+
+                else:
+                    move_com()
+
             else:
                 print("Input position is already taken. Try again.")
                 put_coordinates()
 
-    # to check if game over is.
-    if is_game_over(sign):
-        is_playing = False
-        print("Game Over.")
-    else:
-        move_com()
 
+# print gamefield
 def print_playground():
     for r in range(3):
         print(" ", board[r][0], "|", board[r][1], "|", board[r][2])
         if r != 2:
             print("----|---|----")
+
 
 # Computer turn (in a simple way)
 def move_com():
@@ -50,10 +55,11 @@ def move_com():
                     print_playground()
 
     if is_game_over(sign):
-       is_playing = False
-       print("Game Over.")
+        is_playing = False
+        print("Game Over.")
 
 
+# check game over
 def is_game_over(sign):
 
     for i in range(3):
@@ -66,26 +72,31 @@ def is_game_over(sign):
         elif board[0][2] == sign and board[1][1] == sign and board[2][0] == sign: # /
             return True
         else:
-            return False
+            continue
+    return False
 
 
+# get coordinates from console
 def put_coordinates():
-    x = int(input("Please give an x value: "))
-    y = int(input("Please give an y value: "))
+
 
     try:
+
+        x = int(input("Please give an x value: "))
+        y = int(input("Please give an y value: "))
         if x < 0 or y < 0 or x >= 3 or y >= 3:
             raise Exception("x and y have to be in range between 0 and 2.")
         else:
             move_player(x, y)
 
+    except ValueError:
+        print("Value error: only number is acceptable.")
     except Exception as e:
         print("Error: ", e)
 
 
 while is_playing:
     put_coordinates()
-
 
 
 
