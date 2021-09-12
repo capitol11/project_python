@@ -97,7 +97,7 @@ def move_com_with_rnd_smartly():
         done = True
         print_playground()
 
-    # 1. Try to make X in a row (Attack) 2. Avoid having O in a row (put X when finding 2 X in a row)
+    # Avoid having O in a row (put X when finding 2 X in a row)
     else:
 
         for i in range(3):
