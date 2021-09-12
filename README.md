@@ -1,2 +1,4 @@
 # project_python
-toy projects
+
+Tic-Tac-Toe game with simple AIs. 
+
