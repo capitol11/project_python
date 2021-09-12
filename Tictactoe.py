@@ -26,7 +26,7 @@ def move_player(x, y):
                     print("------------GAME  OVER-----------")
 
                 else:
-                    move_com_with_rnd()
+                    move_com_with_rnd_smartly()
 
             else:
                 print("Input position is already taken. Try again.")
@@ -85,6 +85,77 @@ def move_com_with_rnd():
         print("------------GAME  OVER-----------")
 
 
+# Computer turn (take random numbers in a smart way)
+def move_com_with_rnd_smartly():
+    sign = "X"
+    done = False
+    global is_playing
+
+    # set X in board[1][1] to avoid having diagonal attacks if empty
+    if board[1][1] == " ":
+        board[1][1] = sign
+        done = True
+        print_playground()
+
+    # 1. Try to make X in a row (Attack) 2. Avoid having O in a row (put X when finding 2 X in a row)
+    else:
+
+        for i in range(3):
+
+            if board[i][0]=="O" and board[i][2]=="O" and board[i][1] == " ":
+                board[i][1] = sign
+                done = True
+                print_playground()
+                break
+            elif board[0][i]=="O" and board[2][i]=="O" and board[1][i] == " ":
+                board[1][i] = sign
+                done = True
+                print_playground()
+                break
+            elif board[i][0]=="O" and board[i][1]=="O" and board[i][2] == " ":
+                board[i][2] = sign
+                done = True
+                print_playground()
+                break
+            elif board[i][1]=="O" and board[i][2]=="O" and board[i][0] == " ":
+                board[i][0] = sign
+                done = True
+                print_playground()
+                break
+            elif board[0][i]=="O" and board[1][i]=="O" and board[2][i] == " ":
+                board[2][i] = sign
+                done = True
+                print_playground()
+                break
+            elif board[1][i]=="O" and board[2][i]=="O" and board[0][i] == " ":
+                board[0][i] = sign
+                done = True
+                print_playground()
+                break
+            else:
+                # nobody wins til the field is full
+                if is_game_field_full():
+                    is_playing = False
+                    print("---------------DRAW-------------")
+                    break
+                while True:
+                    x = random.randrange(0, 3)
+                    y = random.randrange(0, 3)
+
+                    if not is_game_over(sign):
+                        if board[x][y] == " " and not done:
+                            board[x][y] = "X"
+                            done = True
+                            print_playground()
+                            break
+                        else:
+                            continue
+
+    if is_game_over(sign):
+        is_playing = False
+        print("------------GAME  OVER-----------")
+
+
 # check game over
 def is_game_over(sign):
     for i in range(3):
@@ -118,6 +189,21 @@ def put_coordinates():
         print("Error: ", e)
 
 
+# check if the game field full is
+def is_game_field_full():
+    cnt = 0
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == " ":
+                cnt+=1
+                continue
+
+    if cnt == 0 or cnt == 1:
+        return True
+    return False
+
+
 print("------Welcome to TICTACTOE------")
 while is_playing:
     put_coordinates()
+
