@@ -1,4 +1,6 @@
 # check if the game is running
+import random
+
 is_playing = True
 
 # make game field
@@ -24,7 +26,7 @@ def move_player(x, y):
                     print("------------GAME  OVER-----------")
 
                 else:
-                    move_com()
+                    move_com_with_rnd()
 
             else:
                 print("Input position is already taken. Try again.")
@@ -53,6 +55,30 @@ def move_com():
                     board[x][y] = "X"
                     done = True
                     print_playground()
+
+    if is_game_over(sign):
+        is_playing = False
+        print("------------GAME  OVER-----------")
+
+
+# Computer turn (take random numbers)
+def move_com_with_rnd():
+    sign = "X"
+    done = False
+    global is_playing
+
+    while True:
+        x = random.randrange(0, 3)
+        y = random.randrange(0, 3)
+
+        if not is_game_over(sign):
+            if board[x][y] == " " and not done:
+                board[x][y] = "X"
+                done = True
+                print_playground()
+                break
+            else:
+                continue
 
     if is_game_over(sign):
         is_playing = False
