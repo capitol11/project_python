@@ -1,7 +1,17 @@
+from enum import Enum
+from random import randint
 
 is_playing = True
 board = [[" " for x in range(3)] for y in range(3)]
 print(board)
+
+class ai(Enum):
+     SIMPLE = 1
+     RANDOM = 2
+     WEIGHTED = 3
+
+current_ai = ai.RANDOM
+
 
 for r in range(3):
     print(" ", board[r][0], "|", board[r][1], "|", board[r][2])
@@ -25,7 +35,7 @@ def move_player(x, y):
                 is_player_turn = False
             else:
                 print("Input position is already taken. Try again.")
-                break
+
     # to check if game over is.
     if is_game_over(str):
         is_playing = False
@@ -39,24 +49,41 @@ def print_playground():
         if r != 2:
             print("----|---|----")
 
-# Computer turn (in a simple way)
 def move_com():
     str = "X"
     done = False
     global is_playing
 
-    if not is_game_over(str):
-        for x in range(3):
-            for y in range(3):
-                if board[x][y] == " " and not done:
-                    board[x][y] = "X"
-                    done = True
-                    print_playground()
+    if(current_ai == ai.SIMPLE):
+        move_com_simple()
+    elif(current_ai == ai.RANDOM):
+        move_com_random()
+    #else:
+        #nichts, sonst move_com_weighted
 
     if is_game_over(str):
        is_playing = False
        print("Game Over.")
 
+def move_com_simple():
+    if not is_game_over(str):
+        for x in range(2):
+            for y in range(2):
+                if board[x][y] == " " and not done:
+                    board[x][y] = "X"
+                    done = True
+                    print_playground()
+
+
+def move_com_random():
+    if not is_game_over(str):
+        while not done:
+            x = randint(0,2)
+            y = randint(0,2)
+            if board[x][y] == " " and not done:
+                board[x][y] = "X"
+                done = True
+                print_playground()
 
 def is_game_over(str):
 
