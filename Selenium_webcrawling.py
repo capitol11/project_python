@@ -21,6 +21,7 @@ driver.get(base_url)
 driver.refresh()
 
 
+# scroll down til the end
 last_point = driver.execute_script("return document.body.scrollHeight")
 while True:
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -31,8 +32,8 @@ while True:
         break
     last_point = new_point
 
-whole_dog_imgs = driver.find_element_by_class_name('islrc')  # Eltern
-dog_imgs = whole_dog_imgs.find_elements_by_tag_name('img')  # Kinder
+whole_dog_imgs = driver.find_element_by_class_name('islrc')  # parent node
+dog_imgs = whole_dog_imgs.find_elements_by_tag_name('img')  # children node
 print(len(dog_imgs))
 
 
@@ -45,23 +46,39 @@ except OSError:
     print("failed to create directory.")
 
 def check_format(img_source):
-    format = ""
+    img_format = ""
+
+    img_source = img_url[:img_url.find(',')]
 
     if 'jpeg' in img_source:
-        format = '.jpg'
+        img_format = '.jpg'
     elif 'png' in img_source:
-        format = '.png'
-    return format
+        img_format = '.png'
+    else:
+        pass
+    return img_format
 
 
-dog = driver.find_element_by_css_selector('#islrg > div.islrc > div:nth-child(1) > a.wXeWr.islib.nfEiy > div.bRMDJf.islir > img')
-img_url = str(dog.get_attribute('src'))
-img_source = img_url[:img_url.find(',')]
+num_of_pic = 100
+not_saved_idx = [] # save idx when img saving doesn't work (ex. None)
 
-format = check_format(img_source)
+for i in range(1, num_of_pic):
+    try:
+        dog = driver.find_element_by_css_selector(f'#islrg > div.islrc > div:nth-child({i}) > a.wXeWr.islib.nfEiy > div.bRMDJf.islir > img')
+        img_url = str(dog.get_attribute('src'))
+        name = str(dog.get_attribute('alt'))
 
-urllib.request.urlretrieve(str(img_url), dir+"/Hund_1"+format)
+        img_format = check_format(img_url)
+        if img_format == ".jpg" or img_format == ".png":
+            urllib.request.urlretrieve(str(img_url), dir + f"/Hund_{i}" + img_format)
+            driver.implicitly_wait(2)
+        else:
+            urllib.request.urlretrieve(str(img_url), dir + f"/Hund_{i}" + ".jpg")
+            driver.implicitly_wait(2)
+
+    except ValueError:
+        not_saved_idx.append(i)
+        print(f"{i}: invalid URL - {name}")
+        print(f"img url: {img_url}")
 print("img saving is done.")
-
-#for i in range(len(dog_imgs)):
-#    driver.find_element_by_css_selector(f'islrg > div.islrc > div:nth-child({i}) > a.wXeWr.islib.nfEiy > div.bRMDJf.islir > img')
+print(not_saved_idx)
