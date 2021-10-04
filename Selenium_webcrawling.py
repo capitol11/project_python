@@ -37,17 +37,30 @@ print(len(dog_imgs))
 
 
 # create img directory if directory not exists
-dir = './img'
+dir = 'Test/img'
 try:
     if not os.path.exists(dir):
         os.mkdir(dir)
 except OSError:
     print("failed to create directory.")
 
+def check_format(img_source):
+    format = ""
+
+    if 'jpeg' in img_source:
+        format = '.jpg'
+    elif 'png' in img_source:
+        format = '.png'
+    return format
+
 
 dog = driver.find_element_by_css_selector('#islrg > div.islrc > div:nth-child(1) > a.wXeWr.islib.nfEiy > div.bRMDJf.islir > img')
-img_url = dog.get_attribute('src')
-urllib.request.urlretrieve(str(img_url), dir+"/Hund_1")
+img_url = str(dog.get_attribute('src'))
+img_source = img_url[:img_url.find(',')]
+
+format = check_format(img_source)
+
+urllib.request.urlretrieve(str(img_url), dir+"/Hund_1"+format)
 print("img saving is done.")
 
 #for i in range(len(dog_imgs)):
